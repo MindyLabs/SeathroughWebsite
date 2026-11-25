@@ -20,11 +20,10 @@ var REF = 'utm_source=' + encodeURIComponent(Q.get('utm_source') || 'instagram')
   + (Q.get('utm_campaign') ? '&utm_campaign=' + encodeURIComponent(Q.get('utm_campaign')) : '');
 var PLAY = 'https://play.google.com/store/apps/details?id=' + PKG + '&referrer=' + encodeURIComponent(REF);
 var ANDROID = /Android/i.test(navigator.userAgent);
-// Chrome opens an app only after a tap: on a redirect it takes the intent's fallback, Play's web page, which still has Install.
-// Instagram's and Facebook's in-app browsers fail on intent:// links, so they get the plain Play link. replace(): Back skips us.
+// Android goes to Play's https page at once: Chrome opens the Play app from a tap, not from a redirect, and in-app browsers
+// (Instagram, Facebook, TikTok) can fail on intent:// links with an error page and no button. replace(): Back skips us.
 // ?stay keeps the page (to look at it on a phone).
-if (ANDROID && !Q.has('stay')) location.replace(/Instagram|FBAN|FBAV|FB_IAB/.test(navigator.userAgent) ? PLAY
-  : 'intent://details?id=' + PKG + '&referrer=' + encodeURIComponent(REF) + '#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=' + encodeURIComponent(PLAY) + ';end');
+if (ANDROID && !Q.has('stay')) location.replace(PLAY);
 </script>
 <style>
 :root { --sea: 56vh; }
